@@ -1,9 +1,9 @@
 import { useEffect } from "react";
+import { ScrollSync } from "react-scroll-sync";
 import { StartTask } from "../utils/interfaces/global";
 import { useTasksStore } from "../utils/store";
 import { Calendar } from "./calendar";
 import { Table } from "./table";
-import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 
 export function Gantt() {
   const { startCalendar } = useTasksStore();

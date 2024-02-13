@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { useTasksStore } from "../../utils/store";
 import { ScrollSyncPane } from "react-scroll-sync";
+import { useTasksStore } from "../../utils/store";
 
 export function Table() {
   const { heightRows, tasks } = useTasksStore();
