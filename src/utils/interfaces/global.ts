@@ -15,3 +15,8 @@ export interface Task extends StartTask {
   height: number;
   dependencies?: string[];
 }
+
+// TaskComponentPropsxw
+export interface TaskComponentProps {
+  task: Task;
+}

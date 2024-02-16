@@ -1,24 +1,15 @@
-import clsx from "clsx";
 import type { DraggableData, DraggableEvent } from "react-draggable";
 import { Rnd } from "react-rnd";
 import { Task } from "../../utils/interfaces/global";
 import { useTasksStore } from "../../utils/store";
 
-interface RowProps {
-  rowHeight: number;
-  columnWidth: number;
-  dates: Date[];
-  index: number;
+interface TaskComponentProps {
   task: Task;
+  componentTask?: ({ task }: { task: Task }) => JSX.Element;
 }
 
-export function Row({ columnWidth, dates, index, rowHeight, task }: RowProps) {
+export function TaskComponent({ task, componentTask }: TaskComponentProps) {
   const { tasks, updateTasks, updateCalendarDates } = useTasksStore();
-
-  const weekEndsColor = (day: number, index: number) => {
-    if ((day === 0 || day === 6) && index % 2 === 0) return "bg-red-100";
-    else if (day === 0 || day === 6) return "bg-red-50";
-  };
 
   const onDrag = (_event: DraggableEvent, data: DraggableData) => {
     const newX = data.x - task.x;
@@ -69,42 +60,28 @@ export function Row({ columnWidth, dates, index, rowHeight, task }: RowProps) {
   };
 
   return (
-    <div
-      className={clsx(
-        "flex relative flex-shrink-0 divide-x",
-        index % 2 === 0 ? "bg-gray-100" : "bg-white"
-      )}
-      style={{ height: rowHeight, width: columnWidth * dates.length }}
+    <Rnd
+      id={task.id}
+      className="absolute"
+      bounds={"parent"}
+      dragAxis="x"
+      enableResizing={{ bottom: false, top: false, right: true, left: true }}
+      position={{ x: task.x, y: task.y }}
+      size={{ width: task.width, height: task.height }}
+      onDrag={onDrag}
+      onDragStop={onResizeOrDragStop}
+      onResize={onResize}
+      onResizeStop={onResizeOrDragStop}
     >
-      {dates.map((date, indexGrid) => (
-        <div
-          key={indexGrid}
-          className={clsx(
-            "flex flex-shrink-0 items-center justify-center",
-            weekEndsColor(date.getDay(), index)
-          )}
-          style={{ width: columnWidth, height: rowHeight }}
-        />
-      ))}
-      <Rnd
-        id={task.id}
-        className="bg-red-500 absolute"
-        bounds={"parent"}
-        dragAxis="x"
-        enableResizing={{ bottom: false, top: false, right: true, left: true }}
-        position={{ x: task.x, y: task.y }}
-        size={{ width: task.width, height: task.height }}
-        onDrag={onDrag}
-        onDragStop={onResizeOrDragStop}
-        onResize={onResize}
-        onResizeStop={onResizeOrDragStop}
-      >
+      {componentTask ? (
+        componentTask({ task })
+      ) : (
         <div className="flex flex-col">
           <span className="w-full truncate">{task.start.toLocaleString()}</span>
           <span className="w-full truncate">{task.end.toLocaleString()}</span>
           <span className="w-full truncate">{task.id}</span>
         </div>
-      </Rnd>
-    </div>
+      )}
+    </Rnd>
   );
 }

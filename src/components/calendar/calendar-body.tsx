@@ -1,8 +1,13 @@
 import { ScrollSyncPane } from "react-scroll-sync";
-import { Row } from ".";
+import { CalendarRow } from ".";
+import { TaskComponentProps } from "../../utils/interfaces/global";
 import { useTasksStore } from "../../utils/store";
 
-export function Body() {
+interface CalendarBodyProps {
+  componentTask?: (props: TaskComponentProps) => JSX.Element;
+}
+
+export function CalendarBody({ componentTask }: CalendarBodyProps) {
   const { tasks, dates, widthColumns, heightRows, calendarStart } =
     useTasksStore();
 
@@ -21,13 +26,14 @@ export function Body() {
         className="relative w-max flex flex-col overflow-y-auto overflow-x-visible"
       >
         {tasks.map((task, index) => (
-          <Row
+          <CalendarRow
             key={index}
             columnWidth={widthColumns}
             dates={dates}
             index={index}
             rowHeight={heightRows}
             task={task}
+            componentTask={componentTask}
           />
         ))}
         <div

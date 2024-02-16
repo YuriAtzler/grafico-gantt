@@ -1,6 +1,6 @@
 import { useTasksStore } from "../../utils/store";
 
-export function Header() {
+export function CalendarHeader() {
   const { dates, headerHeight, widthColumns } = useTasksStore();
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

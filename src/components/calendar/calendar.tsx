@@ -1,10 +1,15 @@
-import { Body, Header } from ".";
+import { CalendarBody, CalendarHeader } from ".";
+import { TaskComponentProps } from "../../utils/interfaces/global";
 
-export function Calendar() {
+interface CalendarProps {
+  componentTask?: (props: TaskComponentProps) => JSX.Element;
+}
+
+export function Calendar({ componentTask }: CalendarProps) {
   return (
     <div className="relative w-full h-full flex flex-col bg-white rounded-md shadow-md overflow-y-hidden overflow-x-auto">
-      <Header />
-      <Body />
+      <CalendarHeader />
+      <CalendarBody componentTask={componentTask} />
     </div>
   );
 }
