@@ -20,3 +20,8 @@ export interface Task extends StartTask {
 export interface TaskComponentProps {
   task: Task;
 }
+
+export interface TableComponentProps {
+  tasks: Task[];
+  heightRows: number;
+}
