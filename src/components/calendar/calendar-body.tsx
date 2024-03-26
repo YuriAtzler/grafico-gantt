@@ -1,7 +1,7 @@
 import { ScrollSyncPane } from "react-scroll-sync";
 import { CalendarRow } from ".";
 import { TaskComponentProps } from "../../utils/interfaces/global";
-import { useTasksStore } from "../../utils/store";
+import { useGanttStore } from "../../utils/store";
 
 interface CalendarBodyProps {
   componentTask?: (props: TaskComponentProps) => JSX.Element;
@@ -9,7 +9,7 @@ interface CalendarBodyProps {
 
 export function CalendarBody({ componentTask }: CalendarBodyProps) {
   const { tasks, dates, widthColumns, heightRows, calendarStart } =
-    useTasksStore();
+    useGanttStore();
 
   const today = new Date();
 

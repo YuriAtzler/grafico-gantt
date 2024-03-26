@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import type { Task, TaskComponentProps } from "../../utils/interfaces/global";
 import { TaskComponent } from "../task";
+import { memo } from "react";
 
 interface RowProps {
   rowHeight: number;
@@ -11,7 +12,7 @@ interface RowProps {
   componentTask?: (props: TaskComponentProps) => JSX.Element;
 }
 
-export function CalendarRow({
+function CalendarRow({
   columnWidth,
   dates,
   index,
@@ -46,3 +47,5 @@ export function CalendarRow({
     </div>
   );
 }
+
+export default memo(CalendarRow);

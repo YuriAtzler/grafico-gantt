@@ -1,1 +1,3 @@
-export * from "./functions/interval-date";
+export * from "./functions";
+export * from "./store";
+export * from "./interfaces";

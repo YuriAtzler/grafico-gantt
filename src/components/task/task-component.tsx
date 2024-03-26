@@ -1,7 +1,7 @@
 import type { DraggableData, DraggableEvent } from "react-draggable";
 import { Rnd } from "react-rnd";
 import { Task } from "../../utils/interfaces/global";
-import { useTasksStore } from "../../utils/store";
+import { updateCalendarDates, updateTasks, useGanttStore } from "../../utils";
 
 interface TaskComponentProps {
   task: Task;
@@ -9,7 +9,7 @@ interface TaskComponentProps {
 }
 
 export function TaskComponent({ task, componentTask }: TaskComponentProps) {
-  const { tasks, updateTasks, updateCalendarDates } = useTasksStore();
+  const { tasks } = useGanttStore();
 
   const onDrag = (_event: DraggableEvent, data: DraggableData) => {
     const newX = data.x - task.x;
@@ -20,10 +20,11 @@ export function TaskComponent({ task, componentTask }: TaskComponentProps) {
       return t;
     });
 
-    updateTasks(newTasks);
+    useGanttStore.setState({ tasks: newTasks });
   };
 
   const onResizeOrDragStop = () => {
+    updateTasks(tasks);
     updateCalendarDates();
   };
 
@@ -56,7 +57,7 @@ export function TaskComponent({ task, componentTask }: TaskComponentProps) {
       return t;
     });
 
-    updateTasks(newTasks);
+    useGanttStore.setState({ tasks: newTasks });
   };
 
   return (

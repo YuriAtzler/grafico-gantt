@@ -1,13 +1,13 @@
 import { ScrollSyncPane } from "react-scroll-sync";
 import { TableComponentProps } from "../../utils/interfaces/global";
-import { useTasksStore } from "../../utils/store";
+import { useGanttStore } from "../../utils";
 
 interface TableProps {
   componentTable?: (props: TableComponentProps) => JSX.Element;
 }
 
 export function Table({ componentTable }: TableProps) {
-  const { heightRows, tasks } = useTasksStore();
+  const { heightRows, tasks } = useGanttStore();
 
   const scrollToItem = (id: string) => {
     const item = document.getElementById(id);

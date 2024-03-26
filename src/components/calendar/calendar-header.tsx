@@ -1,7 +1,7 @@
-import { useTasksStore } from "../../utils/store";
+import { useGanttStore } from "../../utils";
 
 export function CalendarHeader() {
-  const { dates, headerHeight, widthColumns } = useTasksStore();
+  const { dates, headerHeight, widthColumns } = useGanttStore();
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
