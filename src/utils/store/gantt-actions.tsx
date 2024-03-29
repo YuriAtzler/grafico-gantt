@@ -5,12 +5,9 @@ import { endStartDate } from "../functions/end-start-date";
 import { StartTask, Task, ViewMode } from "../interfaces/global";
 
 /** @description Função responsável por iniciar o calendário */
-export const startCalendar = (
-  tasks: StartTask[],
-  viewMode: ViewMode,
-  widthColumns: number,
-  heightRows: number
-) => {
+export const startCalendar = (tasks: StartTask[], viewMode: ViewMode) => {
+  const { widthColumns, heightRows } = useGanttStore.getState();
+
   const startDates = tasks.map(
     (task) =>
       new Date(
@@ -54,15 +51,17 @@ export const startCalendar = (
 
 /** @description Função responsável por atualizar as datas */
 export const updateTasks = (tasks: Task[]) => {
-  const { calendarStart } = useGanttStore.getState();
+  const { calendarStart, widthColumns } = useGanttStore.getState();
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
   const newTasks: Task[] = [];
 
   tasks.forEach((task) => {
-    const millisecondsFromCalendarStart = (task.x / 100) * millisecondsPerDay;
+    const millisecondsFromCalendarStart =
+      (task.x / widthColumns) * millisecondsPerDay;
     const startDate = calendarStart.getTime() + millisecondsFromCalendarStart;
-    const endDate = startDate + (task.width / 100) * millisecondsPerDay;
+    const endDate =
+      startDate + (task.width / widthColumns) * millisecondsPerDay;
 
     newTasks.push({
       ...task,
@@ -78,7 +77,6 @@ export const updateTasks = (tasks: Task[]) => {
 
 /** @description Função responsável por atualizar as datas do calendário */
 export const updateCalendarDates = () => {
-  const { tasks, viewMode, widthColumns, heightRows } =
-    useGanttStore.getState();
-  startCalendar(tasks, viewMode, widthColumns, heightRows);
+  const { tasks, viewMode } = useGanttStore.getState();
+  startCalendar(tasks, viewMode);
 };

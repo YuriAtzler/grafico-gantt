@@ -16,7 +16,7 @@ export function CalendarBody({ componentTask }: CalendarBodyProps) {
   const todayPosition = () => {
     const diffToday = today.getTime() - calendarStart.getTime();
 
-    return (diffToday / (1000 * 60 * 60 * 24)) * 100;
+    return (diffToday / (1000 * 60 * 60 * 24)) * widthColumns;
   };
 
   return (
