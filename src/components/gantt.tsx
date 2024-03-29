@@ -31,6 +31,8 @@ export function Gantt({
   widthColumns,
   heightRows,
 }: GanttProps) {
+  const { heightRows: stateheightRows } = useGanttStore();
+
   useEffect(() => {
     startCalendar(tasks, viewMode);
   }, [tasks]);
@@ -40,6 +42,16 @@ export function Gantt({
     if (widthColumns) useGanttStore.setState({ widthColumns });
     if (heightRows) useGanttStore.setState({ heightRows });
   }, [headerHeight, widthColumns, heightRows]);
+
+  useEffect(() => {
+    useGanttStore.setState((state) => ({
+      tasks: state.tasks.map((t) => ({
+        ...t,
+        height: stateheightRows * 0.8,
+        y: stateheightRows / 8,
+      })),
+    }));
+  }, [stateheightRows]);
 
   return (
     <ScrollSync>

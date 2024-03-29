@@ -18,9 +18,9 @@ export function taskPosition(
     newTasks.push({
       ...task,
       x,
-      y: heightRows / 6,
+      y: heightRows / 8,
       width,
-      height: heightRows * 0.6,
+      height: heightRows * 0.8,
     });
   });
 

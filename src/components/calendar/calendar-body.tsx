@@ -22,6 +22,33 @@ export function CalendarBody({ componentTask }: CalendarBodyProps) {
   return (
     <ScrollSyncPane>
       <div
+        onWheel={(event) => {
+          if (event.ctrlKey) {
+            if (event.deltaY < 0) {
+              useGanttStore.setState((state) => ({
+                widthColumns:
+                  state.widthColumns + 10 < 300
+                    ? state.widthColumns + 10
+                    : state.widthColumns,
+                heightRows:
+                  state.heightRows + 10 < 300
+                    ? state.heightRows + 10
+                    : state.heightRows,
+              }));
+            } else {
+              useGanttStore.setState((state) => ({
+                widthColumns:
+                  state.widthColumns - 10 > 50
+                    ? state.widthColumns - 10
+                    : state.widthColumns,
+                heightRows:
+                  state.heightRows - 10 > 50
+                    ? state.widthColumns - 10
+                    : state.widthColumns,
+              }));
+            }
+          }
+        }}
         id="body-calendar-id"
         className="relative w-max flex flex-col overflow-y-auto overflow-x-visible"
       >
