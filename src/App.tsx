@@ -88,8 +88,6 @@ export function App() {
     }
   };
 
-  console.log(tasks);
-
   return (
     <div className="w-[100vw] h-[100vh] bg-gray-200 flex flex-col items-center justify-center">
       <div className="flex gap-2">
@@ -121,6 +119,7 @@ export function App() {
         <button onClick={handleCreateTask}>Criar</button>
       </div>
       <Gantt
+        showTable={false}
         tasks={tasks}
         viewMode="day"
         componentTask={(props) => <ComponentTaskExample {...props} />}

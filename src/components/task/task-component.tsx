@@ -11,7 +11,7 @@ interface TaskComponentProps {
 export function TaskComponent({ task, componentTask }: TaskComponentProps) {
   const { tasks } = useGanttStore();
 
-  const onDrag = (_event: DraggableEvent, data: DraggableData) => {
+  const onResizeOrDragStop = (_event: DraggableEvent, data: DraggableData) => {
     const newX = data.x - task.x;
 
     const newTasks = tasks.map((t) => {
@@ -20,10 +20,11 @@ export function TaskComponent({ task, componentTask }: TaskComponentProps) {
       return t;
     });
 
-    useGanttStore.setState({ tasks: newTasks });
+    updateTasks(newTasks);
+    updateCalendarDates();
   };
 
-  const onResizeOrDragStop = () => {
+  const onResizeStop = () => {
     updateTasks(tasks);
     updateCalendarDates();
   };
@@ -66,13 +67,14 @@ export function TaskComponent({ task, componentTask }: TaskComponentProps) {
       className="absolute"
       bounds={"parent"}
       dragAxis="x"
+      dragGrid={[10, 10]}
+      resizeGrid={[10, 10]}
       enableResizing={{ bottom: false, top: false, right: true, left: true }}
       position={{ x: task.x, y: task.y }}
       size={{ width: task.width, height: task.height }}
-      onDrag={onDrag}
       onDragStop={onResizeOrDragStop}
       onResize={onResize}
-      onResizeStop={onResizeOrDragStop}
+      onResizeStop={onResizeStop}
     >
       {componentTask ? (
         componentTask({ task })
