@@ -24,7 +24,7 @@ export function CalendarHeader() {
 
   console.log(dates.map((item) => getWeek(item)));
 
-  const datesFilter = (filterDate: Date, type: "month" | "day") => {
+  const datesFilter = (filterDate: Date, type: "month" | "day" | "year") => {
     switch (type) {
       case "day":
         return dates.filter((date) => date.getDate() === filterDate.getDate());
@@ -32,7 +32,27 @@ export function CalendarHeader() {
         return dates.filter(
           (date) => date.getMonth() === filterDate.getMonth(),
         );
+      case "year":
+        return dates.filter(
+          (date) => date.getFullYear() === filterDate.getFullYear(),
+        );
     }
+  };
+
+  const yearGroup = () => {
+    const obj: Record<string, Date> = {};
+    const arr: Date[] = [];
+
+    dates.forEach((d) => {
+      const key = d.toISOString().slice(0, 4); //formato YYYY-MM
+      if (!obj[key]) obj[key] = d;
+    });
+
+    Object.keys(obj).forEach((chave) => {
+      arr.push(obj[chave]);
+    });
+
+    return arr;
   };
 
   const monthGroup = () => {
@@ -182,44 +202,42 @@ export function CalendarHeader() {
             </div>
           ))}
         </div>
-
-        // <div className="flex flex-col">
-        //   <div className="flex">
-        //     {daysGroup().map((day, index) => (
-        //       <div
-        //         className={clsx(
-        //           "flex items-center justify-center",
-        //           index % 2 === 0 ? "bg-gray-50" : "bg-white",
-        //           today.getDate() === day.getDate() &&
-        //             today.getMonth() === day.getMonth() &&
-        //             today.getFullYear() === day.getFullYear() &&
-        //             "border-2 border-green-500",
-        //         )}
-        //         style={{
-        //           minWidth: widthColumns * 24,
-        //           height: headerHeight * 0.4,
-        //         }}
-        //         key={index}
-        //       >
-        //         {day.toLocaleDateString()}
-        //       </div>
-        //     ))}
-        //   </div>
-        //   <div className="flex">
-        //     {dates.map((date, index) => (
-        //       <div
-        //         key={index}
-        //         className="flex flex-shrink-0 flex-col items-center justify-center"
-        //         style={{ width: widthColumns, height: headerHeight * 0.6 }}
-        //       >
-        //         <span>{monthAbreviation[date.getMonth()]}</span>
-        //         <span>Week - {getWeek(date)}</span>
-        //       </div>
-        //     ))}
-        //   </div>
-        // </div>
       );
     case "month":
+      return (
+        <div className="flex shadow">
+          {yearGroup().map((year, index) => (
+            <div
+              key={`${year.toLocaleDateString()}-${index}`}
+              className={clsx(
+                "flex flex-col divide-y text-sm",
+                index % 2 === 0 ? "bg-white" : "bg-gray-50",
+              )}
+            >
+              <div
+                className="flex w-auto items-center justify-center"
+                style={{ height: headerHeight * 0.4 }}
+              >
+                <span>{year.getFullYear()}</span>
+              </div>
+              <div className="flex divide-x">
+                {datesFilter(year, "year").map((month, index) => (
+                  <div
+                    className="flex items-center justify-center"
+                    key={`${getWeek(month)}-${index}`}
+                    style={{
+                      minWidth: widthColumns,
+                      minHeight: headerHeight * 0.6,
+                    }}
+                  >
+                    {month.getMonth() + 1}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
     case "year":
   }
 }

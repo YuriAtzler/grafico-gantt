@@ -2,17 +2,22 @@ import { ScrollSyncPane } from "react-scroll-sync";
 import { CalendarRow } from ".";
 import { TaskComponentProps } from "../../utils/interfaces/global";
 import { useGanttStore } from "../../utils/store";
-import { differenceInDays, endOfWeek, startOfWeek } from "date-fns";
+import {
+  differenceInCalendarMonths,
+  differenceInDays,
+  differenceInMonths,
+  eachDayOfInterval,
+  getDaysInMonth,
+  startOfWeek,
+} from "date-fns";
 
-interface CalendarBodyProps {
-  componentTask?: (props: TaskComponentProps) => JSX.Element;
-}
+interface CalendarBodyProps {}
 
 export function CalendarBody({ componentTask }: CalendarBodyProps) {
   const { tasks, dates, widthColumns, heightRows, calendarStart, viewMode } =
     useGanttStore();
 
-  const today = new Date();
+  const today = new Date("2024-04-29");
 
   const weekRanger = () => {
     // Calcula o início da semana atual
@@ -27,6 +32,20 @@ export function CalendarBody({ componentTask }: CalendarBodyProps) {
     return daysElapsed * columnWidth;
   };
 
+  const monthRanger = () => {
+    // Calcular a diferença em meses e multiplicar pela largura das colunas
+    const diffMonths = differenceInCalendarMonths(today, calendarStart);
+    const basePosition = diffMonths * widthColumns;
+
+    // Calcular a fração do mês atual que já passou
+    const daysInCurrentMonth = getDaysInMonth(today);
+    const dayOfMonth = today.getDate();
+    const fractionOfMonthPassed = dayOfMonth / daysInCurrentMonth;
+
+    // Adicionar a fração do mês que já passou à posição base
+    return basePosition + fractionOfMonthPassed * widthColumns;
+  };
+
   const todayPosition = () => {
     const diffToday = today.getTime() - calendarStart.getTime();
 
@@ -38,7 +57,7 @@ export function CalendarBody({ componentTask }: CalendarBodyProps) {
       case "week":
         return weekRanger();
       case "month":
-        return (diffToday / (1000 * 60 * 60 * 24)) * widthColumns;
+        return monthRanger();
       case "year":
         return (diffToday / (1000 * 60 * 60 * 24)) * widthColumns;
     }
