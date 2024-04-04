@@ -1,7 +1,7 @@
 import type { DraggableData, DraggableEvent } from "react-draggable";
 import { Rnd } from "react-rnd";
 import { Task } from "../../utils/interfaces/global";
-import { updateCalendarDates, updateTasks, useGanttStore } from "../../utils";
+import { updateTasks, useGanttStore } from "../../utils";
 
 interface TaskComponentProps {
   task: Task;
@@ -21,12 +21,10 @@ export function TaskComponent({ task, componentTask }: TaskComponentProps) {
     });
 
     updateTasks(newTasks);
-    updateCalendarDates();
   };
 
   const onResizeStop = () => {
     updateTasks(tasks);
-    updateCalendarDates();
   };
 
   const onResize = (
@@ -34,7 +32,7 @@ export function TaskComponent({ task, componentTask }: TaskComponentProps) {
     dir: string,
     ref: HTMLElement,
     _delta: { width: number; height: number },
-    position: { x: number; y: number }
+    position: { x: number; y: number },
   ) => {
     const newTasks = tasks.map((t) => {
       if (t.dependencies?.includes(task.id)) {
@@ -79,10 +77,8 @@ export function TaskComponent({ task, componentTask }: TaskComponentProps) {
       {componentTask ? (
         componentTask({ task })
       ) : (
-        <div className="flex flex-col">
-          <span className="w-full truncate">{task.start.toLocaleString()}</span>
-          <span className="w-full truncate">{task.end.toLocaleString()}</span>
-          <span className="w-full truncate">{task.id}</span>
+        <div className="flex h-full flex-col items-center justify-center rounded bg-blue-400 text-white shadow">
+          <span>{task.name}</span>
         </div>
       )}
     </Rnd>

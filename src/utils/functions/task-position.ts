@@ -1,22 +1,47 @@
-import { StartTask, Task } from "../interfaces/global";
+import { useGanttStore } from "..";
+import { StartTask, Task, ViewMode } from "../interfaces/global";
 
 export function taskPosition(
   calendarStart: Date,
-  tasks: StartTask[],
+  startTasks: StartTask[],
   pixelPerGrid: number,
-  heightRows: number
+  viewMode: ViewMode
 ) {
+  const { heightRows } = useGanttStore.getState();
   const newTasks: Task[] = [];
 
-  tasks.forEach((task) => {
-    const diffStart = task.start.getTime() - calendarStart.getTime();
-    const taskDuration = task.end.getTime() - task.start.getTime();
+  startTasks.forEach((startTask) => {
+    const diffStart = startTask.start.getTime() - calendarStart.getTime();
+    const taskDuration = startTask.end.getTime() - startTask.start.getTime();
 
-    const width = (taskDuration / (1000 * 60 * 60 * 24)) * pixelPerGrid;
-    const x = (diffStart / (1000 * 60 * 60 * 24)) * pixelPerGrid;
+    let width = 0;
+    let x = 0;
+
+    switch (viewMode) {
+      case "hour":
+        width = (taskDuration / (1000 * 60 * 60)) * pixelPerGrid;
+        x = (diffStart / (1000 * 60 * 60)) * pixelPerGrid;
+        break;
+      case "day":
+        width = (taskDuration / (1000 * 60 * 60 * 24)) * pixelPerGrid;
+        x = (diffStart / (1000 * 60 * 60 * 24)) * pixelPerGrid;
+        break;
+      case "week":
+        width = (taskDuration / (1000 * 60 * 60 * 24 * 7)) * pixelPerGrid;
+        x = (diffStart / (1000 * 60 * 60 * 24 * 7)) * pixelPerGrid;
+        break;
+      case "month":
+        width = (taskDuration / (1000 * 60 * 60 * 24 * 30)) * pixelPerGrid;
+        x = (diffStart / (1000 * 60 * 60 * 24 * 30)) * pixelPerGrid;
+        break;
+      case "year":
+        width = (taskDuration / (1000 * 60 * 60 * 24 * 365)) * pixelPerGrid;
+        x = (diffStart / (1000 * 60 * 60 * 24 * 365)) * pixelPerGrid;
+        break;
+    }
 
     newTasks.push({
-      ...task,
+      ...startTask,
       x,
       y: heightRows / 8,
       width,

@@ -14,7 +14,7 @@ export function intervalDate(start: Date, end: Date, viewMode: ViewMode) {
     case "day":
       return eachDayOfInterval({ start, end });
     case "week":
-      return eachWeekOfInterval({ start, end });
+      return eachWeekOfInterval({ start, end }, { weekStartsOn: 1 });
     case "month":
       return eachMonthOfInterval({ start, end });
     case "year":

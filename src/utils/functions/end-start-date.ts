@@ -1,9 +1,10 @@
+import { getWeek } from "date-fns";
 import { ViewMode } from "../interfaces/global";
 
 export function endStartDate(
   startDates: number[],
   endDates: number[],
-  viewMode: ViewMode
+  viewMode: ViewMode,
 ) {
   const today = new Date();
 
@@ -18,17 +19,27 @@ export function endStartDate(
   let dateEndAux = new Date(endDate);
 
   switch (viewMode) {
-    case "day":
+    case "hour":
       dateStartAux = new Date(startDate);
+      dateStartAux.setHours(0);
+      dateStartAux.setMinutes(0);
       dateStartAux.setDate(dateStartAux.getDate() - 2);
       dateEndAux = new Date(endDate);
+      dateEndAux.setHours(23);
+      dateEndAux.setMinutes(59);
       dateEndAux.setDate(dateEndAux.getDate() + 2);
       break;
-    case "week":
+    case "day":
       dateStartAux = new Date(startDate);
       dateStartAux.setDate(dateStartAux.getDate() - 14);
       dateEndAux = new Date(endDate);
       dateEndAux.setDate(dateEndAux.getDate() + 14);
+      break;
+    case "week":
+      dateStartAux = new Date(startDate);
+      dateStartAux.setDate(dateStartAux.getDate() - 140);
+      dateEndAux = new Date(endDate);
+      dateEndAux.setDate(dateEndAux.getDate() + 140);
       break;
     case "month":
       dateStartAux = new Date(startDate);

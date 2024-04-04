@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { Task, ViewMode } from "../interfaces/global";
 
 export class GanttClass {
-  headerHeight = 50;
+  headerHeight = 60;
   widthColumns = 50;
-  heightRows = 50;
+  heightRows = 40;
   viewMode: ViewMode = "day";
   tasks: Task[] = [];
   calendarStart = new Date();

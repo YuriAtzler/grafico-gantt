@@ -35,12 +35,12 @@ export function Gantt({
 
   useEffect(() => {
     startCalendar(tasks, viewMode);
-  }, [tasks]);
+  }, [tasks, viewMode]);
 
   useEffect(() => {
-    if (headerHeight) useGanttStore.setState({ headerHeight });
-    if (widthColumns) useGanttStore.setState({ widthColumns });
-    if (heightRows) useGanttStore.setState({ heightRows });
+    // if (headerHeight) useGanttStore.setState({ headerHeight });
+    // if (widthColumns) useGanttStore.setState({ widthColumns });
+    // if (heightRows) useGanttStore.setState({ heightRows });
   }, [headerHeight, widthColumns, heightRows]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export function Gantt({
 
   return (
     <ScrollSync>
-      <div className="w-[90%] flex h-[90%] bg-white rounded-md shadow-md">
+      <div className="flex h-[90%] w-[90%] rounded-md bg-white shadow-md">
         {showTable && <Table componentTable={componentTable} />}
         <Calendar componentTask={componentTask} />
       </div>

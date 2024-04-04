@@ -24,4 +24,5 @@ export interface TaskComponentProps {
 export interface TableComponentProps {
   tasks: Task[];
   heightRows: number;
+  headerHeight: number;
 }
